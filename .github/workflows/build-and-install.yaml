@@ -109,7 +109,7 @@ jobs:
       - name: Checking the source folder
         run: ls $GITHUB_WORKSPACE/gollvm_build_process
       - name: Compile test tool, for retrieveing CPU features
-        run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
+        run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
         run: ./a.out
       - name: Trying to check if we could install Ninja
@@ -133,7 +133,7 @@ jobs:
       - name: Extracting llc's host target
         run: llc-11 --version | grep CPU
       - name: Compile test tool, for retrieveing CPU features
-        run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
+        run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
         run: ./a.out
       - name: Trying to check if we could install Ninja
@@ -157,7 +157,7 @@ jobs:
       - name: Extracting llc's host target
         run: llc-12 --version | grep CPU
       - name: Compile test tool, for retrieveing CPU features
-        run: clang-12 -I/usr/lib/llvm-12/include/ -I/usr/lib/llvm-12/include/llvm-c -L/usr/lib/llvm-12/lib -lLLVM-12 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
+        run: clang-12 -I/usr/lib/llvm-12/include/ -I/usr/lib/llvm-12/include/llvm-c -L/usr/lib/llvm-12/lib -lLLVM-12 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
         run: ./a.out
       - name: Trying to check if we could install Ninja
@@ -181,7 +181,7 @@ jobs:
       - name: Extracting llc's host target
         run: llc-13 --version | grep CPU
       - name: Compile test tool, for retrieveing CPU features
-        run: clang-13 -I/usr/lib/llvm-13/include/ -I/usr/lib/llvm-13/include/llvm-c -L/usr/lib/llvm-13/lib -lLLVM-13 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
+        run: clang-13 -I/usr/lib/llvm-13/include/ -I/usr/lib/llvm-13/include/llvm-c -L/usr/lib/llvm-13/lib -lLLVM-13 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
         run: ./a.out
       - name: Trying to check if we could install Ninja
