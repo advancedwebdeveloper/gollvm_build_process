@@ -106,6 +106,8 @@ jobs:
         run: pwd
       - name: Extracting llc's host target
         run: llc-11 --version | grep CPU
+      - name: Checking the source folder
+        run: ls $GITHUB_WORKSPACE
       - name: Compile test tool, for retrieveing CPU features
         run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
