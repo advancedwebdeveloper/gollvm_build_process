@@ -144,14 +144,17 @@ jobs:
         run:  cd $GITHUB_WORKSPACE/gollvm_build_process && git clone https://github.com/llvm/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_min && cd build_min && cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
+#Clang 12 and 13 are still not available        
   clang12_build_minsizerel: #The build with a minimal footprint?
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install Clang 12, using dpkg
-        run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 12
-      - name: Check if Clang 12 is on board
-        run: which clang-12
+      - name: Install build tools
+        run: sudo apt install cmake gcc make build-essential
+      - name: Build & install Clang 12
+        run: git clone https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=MinSizeRel ../llvm && make -j16 && sudo make install
+      - name: Check if Clang
+        run: which clang
       - name: Check our path
         run: pwd
       - name: Extracting llc's host target
