@@ -152,7 +152,7 @@ jobs:
       - name: Install build tools
         run: sudo apt install cmake gcc make build-essential
       - name: Build & install Clang 12
-        run: git clone https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=MinSizeRel ../llvm && make -j16 && sudo make install
+        run: git clone https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel ../llvm && make -j2 && sudo make install
       - name: Check if Clang
         run: which clang
       - name: Check our path
