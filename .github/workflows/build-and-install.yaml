@@ -12,9 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install build tools
-        run: sudo apt install cmake gcc make build-essential python3-pip && sudo pip3 install ninja
+        run: sudo apt install cmake gcc make build-essential binutils python3-pip && sudo pip3 install ninja
       - name: Build & install Clang 13
-        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -G Ninja ../llvm && ninja -v && sudo make install
+        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -G Ninja ../llvm && ninja -v -j 4 && sudo ninja install
       - name: Check if Clang
         run: which clang
       - name: Check our path
