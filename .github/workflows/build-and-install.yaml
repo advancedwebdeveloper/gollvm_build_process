@@ -14,7 +14,7 @@ jobs:
       - name: Install build tools
         run: sudo apt install cmake gcc make build-essential
       - name: Build & install Clang 13
-        run: git clone https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON ../llvm && make --trace -j4 && sudo make install
+        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -G Ninja ../llvm && ninja -v && sudo make install
       - name: Check if Clang
         run: which clang
       - name: Check our path
