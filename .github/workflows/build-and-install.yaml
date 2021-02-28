@@ -14,7 +14,7 @@ jobs:
       - name: Install build tools
         run: sudo apt install cmake gcc make build-essential binutils python3-pip && sudo pip3 install ninja
       - name: Build & install Clang 13
-        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -G Ninja ../llvm && ninja -v -j 4 && sudo ninja install
+        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_TARGETS_TO_BUILD=X86 -G Ninja ../llvm && ninja -v -j 4 && sudo ninja install
       - name: Check if Clang
         run: which clang
       - name: Check our path
@@ -24,7 +24,7 @@ jobs:
       - name: Compile test tool, for retrieveing CPU features
         run: clang -I/usr/local/include/ -I/usr/local/include/llvm-c -L/usr/lib/llvm-13/lib -lLLVM-13git -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
-        run: ./a.out
+        run: export LD_LIBRARY_PATH=/usr/local/lib && ./a.out
       - name: Trying to check if we could install Ninja
         run: sudo apt install ninja-build -y
       - name: Checking the version of make, automake, autoconf, m4 and Ninja
