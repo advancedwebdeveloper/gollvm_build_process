@@ -21,32 +21,7 @@ gcc_compat_build_release: #in sense of CMake's identification - gollvm is indeed
         run:  cd $GITHUB_WORKSPACE/clang_test_cpu_features && git clone https://github.com/llvm/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/clang_test_cpu_features && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
-  
-  clang10_build_release:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Clang 10, using dpkg
-        run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 10
-      - name: Check if Clang 10 is on board
-        run: which clang-10
-      - name: Check our path
-        run: pwd
-      - name: Extracting llc's host target
-        run: llc-10 --version | grep CPU
-      - name: Compile test tool, for retrieveing CPU features
-        run: clang-10 -I/usr/lib/llvm-10/include/ -I/usr/lib/llvm-10/include/llvm-c -L/usr/lib/llvm-10/lib -lLLVM-10 -lstdc++ $GITHUB_WORKSPACE/llvm_cpu_features_investigation.cpp
-      - name: Run the CPU feature extractor
-        run: ./a.out
-      - name: Trying to check if we could install Ninja
-        run: sudo apt install ninja-build -y
-      - name: Checking the version of make, automake, autoconf, m4 and Ninja
-        run: make --version && m4 --version && autoconf --version && automake --version && echo "Ninja's version is" && ninja --version
-      - name: Clonning LLVM master branch && gollvm related repos.
-        run:  cd $GITHUB_WORKSPACE/clang_test_cpu_features && git clone https://github.com/llvm/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
-      - name: Compiling & linking gollvm
-        run: cd $GITHUB_WORKSPACE/clang_test_cpu_features && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
-  clang10_build_relwithdebuginfo: #we had some issues, with this configuration (llvm-goc related) - so adding this build, to ensure
+clang10_build_relwithdebuginfo: #we had some issues, with this configuration (llvm-goc related) - so adding this build, to ensure
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
