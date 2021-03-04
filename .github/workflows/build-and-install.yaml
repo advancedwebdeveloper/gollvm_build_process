@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-gcc_compat_build_release: #in sense of CMake's identification - gollvm is indeed Clang oriented
+  gcc_compat_build_release: #in sense of CMake's identification - gollvm is indeed Clang oriented
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +21,7 @@ gcc_compat_build_release: #in sense of CMake's identification - gollvm is indeed
         run:  cd $GITHUB_WORKSPACE/clang_test_cpu_features && git clone https://github.com/llvm/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/clang_test_cpu_features && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
-clang10_build_relwithdebuginfo: #we had some issues, with this configuration (llvm-goc related) - so adding this build, to ensure
+  clang10_build_relwithdebuginfo: #we had some issues, with this configuration (llvm-goc related) - so adding this build, to ensure
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -45,7 +45,7 @@ clang10_build_relwithdebuginfo: #we had some issues, with this configuration (ll
         run:  cd $GITHUB_WORKSPACE/clang_test_cpu_features && git clone https://github.com/llvm/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/clang_test_cpu_features && mkdir build_debuggable_release && cd build_debuggable_release && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
-  clang10_build_minsizerel: #The build with a minimal footprint?
+  clang10_build_minsizerel:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
