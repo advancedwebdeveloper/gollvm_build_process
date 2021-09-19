@@ -146,3 +146,4 @@ jobs:
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_min && cd build_min && cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G Ninja ../llvm-project/llvm && ninja gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
   
+  
