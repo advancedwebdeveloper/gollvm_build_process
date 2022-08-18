@@ -18,7 +18,7 @@ jobs:
       - name: Checking the version of make, automake, autoconf, m4 and Ninja
         run: make --version && m4 --version && autoconf --version && automake --version && echo "Ninja's version is" && ninja --version
       - name: Clonning LLVM master branch && gollvm related repos.
-        run:  cd $GITHUB_WORKSPACE/gollvm_build_process && git clone https://github.com/plctlab/llvm-project/tree/llvm-for-gollvm && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
+        run:  cd $GITHUB_WORKSPACE/gollvm_build_process && git clone https://github.com/plctlab/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
         run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
   clang10_build_relwithdebuginfo: #we had some issues, with this configuration (llvm-goc related) - so adding this build, to ensure
