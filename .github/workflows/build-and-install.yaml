@@ -80,9 +80,9 @@ jobs:
       - name: Check our path
         run: pwd
       - name: Extracting llc's host target
-        run: llc-11 --version | grep CPU
+        run: llc-13 --version | grep CPU
       - name: Compile test tool, for retrieveing CPU features
-        run: clang-11 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
+        run: clang-13 -I/usr/lib/llvm-11/include/ -I/usr/lib/llvm-11/include/llvm-c -L/usr/lib/llvm-11/lib -lLLVM-11 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
       - name: Run the CPU feature extractor
         run: ./a.out
       - name: Trying to check if we could install Ninja
@@ -92,7 +92,7 @@ jobs:
       - name: Clonning LLVM master branch && gollvm related repos.
         run:  cd $GITHUB_WORKSPACE/gollvm_build_process && git clone -b llvm-for-gollvm https://github.com/plctlab/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
       - name: Compiling & linking gollvm
-        run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-11 -DCMAKE_CXX_COMPILER=clang++-11 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
+        run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_release && cd build_release && cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-13 -DCMAKE_CXX_COMPILER=clang++-13 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
   clang12_build_minsizerel: #The build with a minimal footprint?
     runs-on: ubuntu-20.04
     steps:
