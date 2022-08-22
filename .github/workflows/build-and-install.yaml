@@ -99,14 +99,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Clang 12, using dpkg
         run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 12
-     #- name: Check if Clang 13 is on board
-     #  run: which clang-13
+     #- name: Check if Clang 12 is on board
+     #  run: which clang-12
       - name: Check our path
         run: pwd
      #- name: Extracting llc's host target
-     #  run: llc-13 --version | grep CPU
+     #  run: llc-12 --version | grep CPU
      #- name: Compile test tool, for retrieveing CPU features
-     #  run: clang-13 -I/usr/lib/llvm-13/include/ -I/usr/lib/llvm-13/include/llvm-c -L/usr/lib/llvm-13/lib -lLLVM-13 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
+     #  run: clang-12 -I/usr/lib/llvm-12/include/ -I/usr/lib/llvm-12/include/llvm-c -L/usr/lib/llvm-12/lib -lLLVM-12 -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
      #- name: Run the CPU feature extractor
      #  run: ./a.out
       - name: Trying to check if we could install Ninja
@@ -119,32 +119,6 @@ jobs:
         run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_min && cd build_min && cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12 -G Ninja ../llvm-project/llvm && ninja -j16 gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
   
       
-  clang14_build_minsizerel: #The build with a minimal footprint?
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install build tools
-        run: sudo apt install cmake gcc make build-essential binutils python3-pip && sudo pip3 install ninja
-      - name: Build & install Clang 14
-        run: git clone --progress https://github.com/llvm/llvm-project.git && cd llvm-project && mkdir build && cd build && cmake -DLLVM_USE_LINKER=gold -DLLVM_ENABLE_PROJECTS='clang;lld' -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_TARGETS_TO_BUILD=X86 -G Ninja ../llvm && ninja -v -j 4 && sudo ninja install
-      - name: Check if Clang
-        run: which clang
-      - name: Check our path
-        run: pwd
-      - name: Extracting llc's host target
-        run: llc --version | grep CPU
-      - name: Compile test tool, for retrieveing CPU features
-        run: clang -I/usr/local/include/ -I/usr/local/include/llvm-c -L/usr/lib/llvm-13/lib -lLLVM-14git -lstdc++ $GITHUB_WORKSPACE/gollvm_build_process/llvm_cpu_features_investigation.cpp
-      - name: Run the CPU feature extractor
-        run: export LD_LIBRARY_PATH=/usr/local/lib && ./a.out
-      - name: Trying to check if we could install Ninja
-        run: sudo apt install ninja-build -y
-      - name: Checking the version of make, automake, autoconf, m4 and Ninja
-        run: make --version && m4 --version && autoconf --version && automake --version && echo "Ninja's version is" && ninja --version
-      - name: Clonning LLVM master branch && gollvm related repos.
-        run:  cd $GITHUB_WORKSPACE/gollvm_build_process && git clone -b llvm-for-gollvm https://github.com/plctlab/llvm-project.git && cd llvm-project/llvm/tools && git clone https://go.googlesource.com/gollvm &&  cd gollvm && git clone https://go.googlesource.com/gofrontend && cd libgo && git clone https://github.com/libffi/libffi.git && git clone https://github.com/ianlancetaylor/libbacktrace.git
-      - name: Compiling & linking gollvm
-        run: cd $GITHUB_WORKSPACE/gollvm_build_process && mkdir build_min && cd build_min && cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -G Ninja ../llvm-project/llvm && ninja gollvm && ninja GoBackendCoreTests && ./tools/gollvm/unittests/BackendCore/GoBackendCoreTests
   
   
 #Getting back to LLVM project
